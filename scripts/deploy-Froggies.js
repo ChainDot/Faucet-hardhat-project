@@ -1,9 +1,11 @@
-/* eslint-disable space-before-function-paren */
-/* eslint-disable no-undef */
 const hre = require('hardhat');
 const { deployed } = require('./deployed');
 
 async function main() {
+  const INITIAL_SUPPLY = ethers.utils.parseEther('1000000000');
+  const NAME = 'Froggies';
+  const SYM = 'FRG';
+
   // Hardhat always runs the compile task when running scripts with its command
   // line interface.
   //
@@ -16,15 +18,15 @@ async function main() {
   console.log('Deploying contracts with the account:', deployer.address);
 
   // We get the contract to deploy
-  const Greeter = await hre.ethers.getContractFactory('Greeter');
-  const greeter = await Greeter.deploy('Hello, Hardhat!');
+  const Froggies = await hre.ethers.getContractFactory('Froggies');
+  const froggies = await Froggies.deploy(deployer.address, INITIAL_SUPPLY, NAME, SYM);
 
   // Attendre que le contrat soit réellement déployé, cad que la transaction de déploiement
   // soit incluse dans un bloc
-  await greeter.deployed();
+  await froggies.deployed();
 
   // Create/update deployed.json and print usefull information on the console.
-  await deployed('Greeter', hre.network.name, greeter.address);
+  await deployed('Froggies', hre.network.name, froggies.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
